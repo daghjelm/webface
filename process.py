@@ -32,45 +32,45 @@ import shutil
     ├── ...
 """
 
-folder_name = 'webface-10'
-data_path = 'data/' + folder_name
+def split(folder_name):
+    data_path = 'data/' + folder_name
 
-#get number of folders in data_path
-num_folders = len(os.listdir(data_path))
+    train_size = 0.8 
+    test_size = 0.2 
 
-train_size = 0.8 
-test_size = 0.2 
+    train_path = 'data/train/' 
+    test_path = 'data/test/' 
 
-train_path = 'data/train/' 
-test_path = 'data/test/' 
+    if not os.path.exists(train_path):
+        os.mkdir(train_path)
+    if not os.path.exists(test_path):
+        os.mkdir(test_path)
 
-if not os.path.exists(train_path):
-    os.mkdir(train_path)
-if not os.path.exists(test_path):
-    os.mkdir(test_path)
+    train_path = 'data/train/' + folder_name
+    test_path = 'data/test/' + folder_name
 
-train_path = 'data/train/' + folder_name
-test_path = 'data/test/' + folder_name
+    #create train and test folders if they don't exist
+    if not os.path.exists(train_path):
+        os.mkdir(train_path)
+    if not os.path.exists(test_path):
+        os.mkdir(test_path)
 
-#create train and test folders if they don't exist
-if not os.path.exists(train_path):
-    os.mkdir(train_path)
-if not os.path.exists(test_path):
-    os.mkdir(test_path)
+    #loop over all folders in data_path and add the first 80% to train_path and the rest to test_path
+    for i, folder in enumerate(os.listdir(data_path)):
+        folder_path = os.path.join(data_path, folder)
+        n = len(os.listdir(folder_path))
+        for i, image in enumerate(os.listdir(folder_path)):
+            image_path = os.path.join(folder_path, image)
 
-#loop over all folders in data_path and add the first 80% to train_path and the rest to test_path
-for i, folder in enumerate(os.listdir(data_path)):
-    folder_path = os.path.join(data_path, folder)
-    n = len(os.listdir(folder_path))
-    for i, image in enumerate(os.listdir(folder_path)):
-        image_path = os.path.join(folder_path, image)
+            new_folder_path = train_path if i < n * train_size else test_path 
+            new_folder_path = os.path.join(new_folder_path, folder) 
 
-        new_folder_path = train_path if i < n * train_size else test_path 
-        new_folder_path = os.path.join(new_folder_path, folder) 
+            #create folder for specific identity if it doesn't exist
+            if not os.path.exists(new_folder_path):
+                os.mkdir(new_folder_path)
+            
+            #copy image to new folder
+            shutil.copy(image_path, os.path.join(new_folder_path, image))
 
-        #create folder for specific identity if it doesn't exist
-        if not os.path.exists(new_folder_path):
-            os.mkdir(new_folder_path)
-        
-        #copy image to new folder
-        shutil.copy(image_path, os.path.join(new_folder_path, image))
+if __name__ == '__main__':
+    split('webface-10')
