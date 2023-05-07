@@ -61,15 +61,15 @@ def merge_datasets(root: str, new_name: str, paths):
                 shutil.copy(imgsourcepath, imgdestpath)
 
 def main():
+    print('''
+    Enter the "keyword" to run the "function"
+    ----------------------------
+    function            : keyword
+    ----------------------------
+    identity size split : ident
+    image size split    : image
+    merge datasets      : merge''')
     while True:
-        print('''
-            Enter the "keyword" to run the "function"
-            ----------------------------
-            function            : keyword
-            ----------------------------
-            identity size split : ident
-            image size split    : image
-            merge datasets      : merge''')
         inp = input('enter keyword : ')
         if inp == 'ident':
             print('identity size split')
