@@ -73,4 +73,7 @@ def split(folder_name):
             shutil.copy(image_path, os.path.join(new_folder_path, image))
 
 if __name__ == '__main__':
-    split('webface-10')
+    # split('casia-144000')
+    # split('digiface_subjects_0-1999_72_imgs')
+    folder = input('Enter folder name: ')
+    split(folder)
